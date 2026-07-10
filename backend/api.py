@@ -14,19 +14,17 @@ UPLOAD_DIR = "uploads"
 os.makedirs(UPLOAD_DIR, exist_ok=True)
 
 
+from datetime import datetime
+
 @router.post("/analyze-meeting")
 async def analyze_meeting_endpoint(
-    title: str = Form(...),
-    date: str = Form(...),
-    participants: str = Form(...),
-    meeting_type: str = Form(...),
     transcript: Optional[str] = Form(None),
     audio: Optional[UploadFile] = File(None),
 ):
     """
-    Single endpoint that handles everything:
+    Simplified endpoint:
     1. Transcribe audio (if uploaded)
-    2. Analyze with Gemini AI
+    2. Analyze with AI (extracts title, participants, meeting type, etc.)
     3. Save to Google Sheets
     4. Return JSON response
     """
@@ -48,15 +46,18 @@ async def analyze_meeting_endpoint(
         if not transcript:
             return {"status": "error", "message": "Please provide either an audio file or a transcript."}
 
-        # Step 2: Analyze with Gemini
-        result = analyze_meeting(transcript, title, meeting_type, participants)
+        # Step 2: Analyze with AI
+        result = analyze_meeting(transcript)
+
+        # Generate current date automatically
+        current_date = datetime.now().strftime("%Y-%m-%d")
 
         # Step 3: Save to Google Sheets
         save_to_sheets({
-            "title": title,
-            "date": date,
-            "participants": participants,
-            "meeting_type": meeting_type,
+            "title": result.get("title", "Untitled Meeting"),
+            "date": current_date,
+            "participants": result.get("participants", "Unknown"),
+            "meeting_type": result.get("meeting_type", "General"),
             "summary": result.get("summary", ""),
             "key_decisions": result.get("key_decisions", []),
             "action_items": result.get("action_items", []),
@@ -65,6 +66,10 @@ async def analyze_meeting_endpoint(
 
         # Step 4: Return the response
         return {
+            "title": result.get("title", "Untitled Meeting"),
+            "date": current_date,
+            "participants": result.get("participants", "Unknown"),
+            "meeting_type": result.get("meeting_type", "General"),
             "summary": result.get("summary", ""),
             "key_decisions": result.get("key_decisions", []),
             "action_items": result.get("action_items", []),

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Backend Tester - AI Meeting Analyzer</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <button id="theme-toggle" class="theme-toggle-btn" aria-label="Toggle theme">
+            <svg id="theme-toggle-light-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+            <svg id="theme-toggle-dark-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+        </button>
+        <header>
+            <h1>AI Meeting Analyzer API Tester</h1>
+            <p>Upload an audio file or paste a transcript to test the backend</p>
+        </header>
+        
+        <main>
+            <div class="card input-section">
+                <h2>Input</h2>
+                <form id="analyze-form">
+                    <div class="form-group">
+                        <label for="transcript">Transcript (Text)</label>
+                        <textarea id="transcript" name="transcript" rows="6" placeholder="Paste your meeting transcript here..."></textarea>
+                    </div>
+                    
+                    <div class="divider"><span>OR</span></div>
+                    
+                    <div class="form-group">
+                        <label for="audio">Audio File</label>
+                        <input type="file" id="audio" name="audio" accept="audio/*">
+                    </div>
+                    
+                    <button type="submit" class="btn-submit" id="submit-btn">
+                        <span class="btn-text">Analyze Meeting</span>
+                        <div class="loader" id="loader" style="display: none;"></div>
+                    </button>
+                </form>
+            </div>
+
+            <div class="card output-section" id="output-section">
+                <h2>Result</h2>
+                <div id="error-message" class="error-msg"></div>
+                <div id="result-content" class="result-content hidden">
+                    <div class="result-header">
+                        <h3 id="res-title"></h3>
+                        <span id="res-type" class="badge"></span>
+                    </div>
+                    
+                    <div class="meta-info">
+                        <div class="meta-item"><strong>Date:</strong> <span id="res-date"></span></div>
+                        <div class="meta-item"><strong>Participants:</strong> <span id="res-participants"></span></div>
+                    </div>
+
+                    <div class="result-block">
+                        <h4>Summary</h4>
+                        <p id="res-summary"></p>
+                    </div>
+
+                    <div class="result-columns">
+                        <div class="result-block">
+                            <h4>Key Decisions</h4>
+                            <ul id="res-decisions"></ul>
+                        </div>
+                        <div class="result-block">
+                            <h4>Action Items</h4>
+                            <ul id="res-action-items"></ul>
+                        </div>
+                        <div class="result-block">
+                            <h4>Team Commitments</h4>
+                            <ul id="res-commitments"></ul>
+                        </div>
+                    </div>
+                    
+                    <div class="result-block">
+                        <h4>Transcript</h4>
+                        <div class="transcript-box" id="res-transcript"></div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>

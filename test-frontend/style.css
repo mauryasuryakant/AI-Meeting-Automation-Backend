@@ -148,6 +148,10 @@ textarea, input[type="file"] {
     transition: border-color 0.3s, background-color 0.3s, color 0.3s;
 }
 
+textarea {
+    resize: vertical;
+}
+
 input[type="file"] {
     cursor: pointer;
     padding: 0.5rem;

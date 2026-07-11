@@ -14,3 +14,6 @@ test_cURL
 # frontent is getting developed by different team
 
 frontend/
+
+Docs/Deploy.md
+Docs/Routes.md

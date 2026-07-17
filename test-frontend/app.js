@@ -31,11 +31,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
-        
+
         // Reset state
         errorMsg.textContent = '';
         resultContent.classList.add('hidden');
-        
+
         const transcriptInput = document.getElementById('transcript').value.trim();
         const audioInput = document.getElementById('audio').files[0];
 
@@ -60,7 +60,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         try {
             // Note: Update URL if backend runs on a different port
-            const response = await fetch('http://127.0.0.1:8000/analyze-meeting', {
+            const response = await fetch('http://localhost:8000/analyze-meeting', {
                 method: 'POST',
                 body: formData,
             });
@@ -90,7 +90,7 @@ document.addEventListener('DOMContentLoaded', () => {
         resDate.textContent = data.date || '-';
         resParticipants.textContent = data.participants || '-';
         resSummary.textContent = data.summary || 'No summary available.';
-        
+
         resTranscript.textContent = data.transcript || 'No transcript available.';
 
         populateList(resDecisions, data.key_decisions);

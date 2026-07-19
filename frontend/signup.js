@@ -1,6 +1,7 @@
-/* Login page logic */
+/* Signup page logic */
 
 const API = 'http://localhost:8000';
+
 
 // ─── Google OAuth handler (called by Google Identity Services) ────────────────
 
@@ -23,12 +24,15 @@ async function handleGoogleCredential(response) {
         if (data.status === 'error') return showError(data.message);
 
         setSession(data.user);
-        window.location.href = 'dashboard.html';
+        alertEl.textContent = 'Signed in with Google! Redirecting…';
+        alertEl.className = 'alert alert-success show';
+        setTimeout(() => window.location.href = 'dashboard.html', 800);
 
     } catch {
         showError('Google Sign-In failed. Make sure the backend is running.');
     }
 }
+
 
 document.addEventListener('DOMContentLoaded', () => {
     redirectIfLoggedIn();

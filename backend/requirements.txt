@@ -1,7 +1,0 @@
-fastapi
-uvicorn
-python-dotenv
-python-multipart
-groq
-faster-whisper
-gspread

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard — AI Meeting ActionFlow</title>
+    <meta name="description" content="Upload a meeting recording or transcript to extract AI-powered action items and automatically assign tasks to your team.">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="app-page">
+
+    <!-- ─── Header ─────────────────────────────────────────────────────── -->
+    <header class="app-header">
+        <div class="header-inner">
+            <a href="dashboard.html" class="header-logo">
+                <div class="logo-badge">⚡</div>
+                ActionFlow
+            </a>
+            <nav class="header-nav">
+                <a href="dashboard.html" class="nav-link active" id="nav-dashboard">Dashboard</a>
+                <a href="employees.html" class="nav-link" id="nav-team">Team</a>
+            </nav>
+            <div class="header-right">
+                <div class="avatar" id="user-avatar" role="button" aria-label="Open user menu" tabindex="0"></div>
+                <div class="dropdown" id="user-dropdown" role="menu">
+                    <div class="dropdown-header">
+                        <div class="name" id="dropdown-name"></div>
+                        <div class="email" id="dropdown-email"></div>
+                    </div>
+                    <button class="dropdown-item" id="btn-tasks" role="menuitem">
+                        📋 Assigned Tasks
+                    </button>
+                    <a href="employees.html" class="dropdown-item" role="menuitem">
+                        👥 Manage Team
+                    </a>
+                    <button class="dropdown-item danger" id="btn-logout" role="menuitem">
+                        ↩ Logout
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- ─── Main ───────────────────────────────────────────────────────── -->
+    <main class="app-main">
+
+        <div class="page-header">
+            <h1 class="page-title">Meeting Analyzer</h1>
+            <p class="page-subtitle">Upload a recording or paste a transcript — AI will extract action items and email your team.</p>
+        </div>
+
+        <!-- Upload Card -->
+        <div class="card">
+            <div class="card-title">📤 Upload Meeting</div>
+
+            <div class="upload-tabs" role="tablist">
+                <button class="upload-tab active" data-tab="transcript" role="tab">📝 Transcript</button>
+                <button class="upload-tab" data-tab="audio" role="tab">🎙️ Audio File</button>
+            </div>
+
+            <form id="analyze-form">
+                <!-- Transcript Panel -->
+                <div class="upload-panel active" id="panel-transcript">
+                    <textarea
+                        id="transcript"
+                        class="textarea-input"
+                        placeholder="Paste your meeting transcript here…&#10;&#10;Example:&#10;Alice: Let's review Q3 priorities.&#10;Bob: I'll handle the API integration by Friday.&#10;Alice: Great. Mark, can you update the docs?"
+                    ></textarea>
+                </div>
+
+                <!-- Audio Panel -->
+                <div class="upload-panel" id="panel-audio">
+                    <div class="file-drop-zone" id="drop-zone">
+                        <input type="file" id="audio" accept="audio/*,.mp3,.wav,.webm,.m4a,.ogg" aria-label="Upload audio file">
+                        <div class="drop-icon">🎵</div>
+                        <p class="drop-text"><strong>Click to upload</strong> or drag and drop</p>
+                        <p class="drop-hint">MP3, WAV, WEBM, M4A, OGG — up to any size</p>
+                        <p class="file-selected hidden" id="file-name"></p>
+                    </div>
+                </div>
+
+                <div id="form-alert" class="alert alert-error mt-1"></div>
+
+                <button type="submit" id="analyze-btn" class="btn btn-primary mt-1">
+                    <span class="btn-text">⚡ Analyze Meeting</span>
+                    <div class="spinner" id="analyze-spinner"></div>
+                </button>
+            </form>
+        </div>
+
+        <!-- Results Card (hidden until analysis returns) -->
+        <div class="card result-card hidden" id="result-section">
+
+            <div class="result-header">
+                <div>
+                    <div class="result-title" id="res-title"></div>
+                    <div class="result-badges">
+                        <span class="badge badge-primary" id="res-type"></span>
+                        <span class="badge badge-muted" id="res-date"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="result-meta" id="res-meta"></div>
+
+            <div class="section-label">Summary</div>
+            <div class="result-summary" id="res-summary"></div>
+
+            <div class="result-grid" style="margin-top: 1.25rem;">
+                <div>
+                    <div class="section-label">Key Decisions</div>
+                    <div id="res-decisions"></div>
+                </div>
+                <div>
+                    <div class="section-label">Team Commitments</div>
+                    <div id="res-commitments"></div>
+                </div>
+            </div>
+
+            <div class="section-label" style="margin-top: 1.25rem;">Action Items</div>
+            <div id="res-action-items"></div>
+
+            <div class="section-label">Transcript</div>
+            <div class="transcript-box" id="res-transcript"></div>
+
+        </div>
+    </main>
+
+    <!-- ─── Tasks Drawer ────────────────────────────────────────────────── -->
+    <div class="drawer-overlay" id="drawer-overlay" aria-hidden="true"></div>
+    <aside class="drawer" id="tasks-drawer" aria-label="Assigned tasks panel">
+        <div class="drawer-header">
+            <span class="drawer-title">📋 Assigned Tasks</span>
+            <button class="btn-icon" id="close-drawer" aria-label="Close panel">✕</button>
+        </div>
+        <div class="drawer-body" id="tasks-body"></div>
+    </aside>
+
+    <!-- Toast notification -->
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <script src="auth.js"></script>
+    <script src="dashboard.js"></script>
+</body>
+</html>
